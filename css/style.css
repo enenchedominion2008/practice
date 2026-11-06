@@ -1,0 +1,7 @@
+.product-thumb img {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 180px;
+  object-fit: contain;
+}

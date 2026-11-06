@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartly — Everything you need, delivered</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="logo">🛒 Kartly<span></span></div>
+    <div class="searchbar">
+      <input type="text" placeholder="Search for products, brands and more...">
+      <button>Search</button>
+    </div>
+    <div class="topbar-actions">
+      <a href="login.html">Sign In</a>
+      <a href="#">Help</a>
+      <a href="#">🛍️ Cart<span class="cart-badge">3</span></a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-banner">
+      <div>
+        <h1>Everything you need, delivered.</h1>
+        <p>Shop electronics, fashion, groceries &amp; more — pay on delivery.</p>
+      </div>
+      <div class="flash">
+        <small>FLASH SALE ENDS IN</small>
+        <div class="timer" id="flashTimer">02:14:33</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section">
+    <h2>Today's Deals</h2>
+    <div class="product-grid">
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/phone.jpg" alt="Smartphone" loading="lazy"></div>
+        <div class="product-tag">-25%</div>
+        <div class="product-name">Smartphone 128GB — Dual SIM, 6.6" Display</div>
+        <div class="product-price">₦185,000 <span class="product-old">₦245,000</span></div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/headset.jpg" alt="Wireless headphones" loading="lazy"></div>
+        <div class="product-tag">-15%</div>
+        <div class="product-name">Wireless Noise-Cancelling Headphones</div>
+        <div class="product-price">₦42,500 <span class="product-old">₦50,000</span></div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/shoe.jpg" alt="Running sneakers" loading="lazy"></div>
+        <div class="product-name">Running Sneakers — Lightweight, All Sizes</div>
+        <div class="product-price">₦28,000</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/laptop.jpg" alt="Laptop" loading="lazy"></div>
+        <div class="product-tag">-10%</div>
+        <div class="product-name">14" Laptop — 8GB RAM, 512GB SSD</div>
+        <div class="product-price">₦520,000 <span class="product-old">₦580,000</span></div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/watch.jpg" alt="Smartwatch" loading="lazy"></div>
+        <div class="product-name">Smartwatch — Heart Rate &amp; GPS</div>
+        <div class="product-price">₦65,000</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/food.jpg" alt="Groceries and home essentials" loading="lazy"></div>
+        <div class="product-name">Home Essentials Bundle — Groceries &amp; More</div>
+        <div class="product-price">₦18,500</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb"><img src="../img/gamepad.jpg" alt="Gaming controller" loading="lazy"></div>
+        <div class="product-tag">-20%</div>
+        <div class="product-name">Gaming Controller — Wireless, Rechargeable</div>
+        <div class="product-price">₦22,000 <span class="product-old">₦27,500</span></div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-thumb">📷</div>
+        <div class="product-name">Digital Camera — 24MP, 4K Video</div>
+        <div class="product-price">₦310,000</div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    Kartly Marketplace · Everything you need, delivered · © 2025
+  </footer>
+
+  <script>
+    // Flash sale countdown — purely cosmetic
+    let t = 2 * 3600 + 14 * 60 + 33;
+    const el = document.getElementById('flashTimer');
+    setInterval(() => {
+      if (t <= 0) return;
+      t--;
+      const h = String(Math.floor(t / 3600)).padStart(2, '0');
+      const m = String(Math.floor((t % 3600) / 60)).padStart(2, '0');
+      const s = String(t % 60).padStart(2, '0');
+      el.textContent = `${h}:${m}:${s}`;
+    }, 1000);
+  </script>
+
+</body>
+</html>
