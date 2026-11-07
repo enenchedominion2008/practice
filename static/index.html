@@ -4,7 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kartly — Everything you need, delivered</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Added styles for the Add to Cart button */
+    .btn-add-cart {
+      width: 100%;
+      background: #fff;
+      color: var(--kartly-orange);
+      border: 1px solid var(--kartly-orange);
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+    .btn-add-cart:hover {
+      background: var(--kartly-orange);
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
 
@@ -18,7 +38,8 @@
     <div class="topbar-actions">
       <a href="login.html">Sign In</a>
       <a href="#">Help</a>
-      <a href="#">🛍️ Cart<span class="cart-badge">3</span></a>
+      <!-- Notice the cart badge is dynamic now -->
+      <a href="dashboard.html">🛍️ Cart<span class="cart-badge" id="cartCount">0</span></a>
     </div>
   </header>
 
@@ -46,6 +67,7 @@
         <div class="product-tag">-25%</div>
         <div class="product-name">Smartphone 128GB — Dual SIM, 6.6" Display</div>
         <div class="product-price">₦185,000 <span class="product-old">₦245,000</span></div>
+        <button class="btn-add-cart" onclick="addToCart('Smartphone')">Add to Cart</button>
       </div>
 
       <div class="product-card">
@@ -53,12 +75,14 @@
         <div class="product-tag">-15%</div>
         <div class="product-name">Wireless Noise-Cancelling Headphones</div>
         <div class="product-price">₦42,500 <span class="product-old">₦50,000</span></div>
+        <button class="btn-add-cart" onclick="addToCart('Headphones')">Add to Cart</button>
       </div>
 
       <div class="product-card">
         <div class="product-thumb"><img src="../img/shoe.jpg" alt="Running sneakers" loading="lazy"></div>
         <div class="product-name">Running Sneakers — Lightweight, All Sizes</div>
         <div class="product-price">₦28,000</div>
+        <button class="btn-add-cart" onclick="addToCart('Sneakers')">Add to Cart</button>
       </div>
 
       <div class="product-card">
@@ -66,18 +90,21 @@
         <div class="product-tag">-10%</div>
         <div class="product-name">14" Laptop — 8GB RAM, 512GB SSD</div>
         <div class="product-price">₦520,000 <span class="product-old">₦580,000</span></div>
+        <button class="btn-add-cart" onclick="addToCart('Laptop')">Add to Cart</button>
       </div>
 
       <div class="product-card">
         <div class="product-thumb"><img src="../img/watch.jpg" alt="Smartwatch" loading="lazy"></div>
         <div class="product-name">Smartwatch — Heart Rate &amp; GPS</div>
         <div class="product-price">₦65,000</div>
+        <button class="btn-add-cart" onclick="addToCart('Smartwatch')">Add to Cart</button>
       </div>
 
       <div class="product-card">
         <div class="product-thumb"><img src="../img/food.jpg" alt="Groceries and home essentials" loading="lazy"></div>
         <div class="product-name">Home Essentials Bundle — Groceries &amp; More</div>
         <div class="product-price">₦18,500</div>
+        <button class="btn-add-cart" onclick="addToCart('Groceries')">Add to Cart</button>
       </div>
 
       <div class="product-card">
@@ -85,12 +112,14 @@
         <div class="product-tag">-20%</div>
         <div class="product-name">Gaming Controller — Wireless, Rechargeable</div>
         <div class="product-price">₦22,000 <span class="product-old">₦27,500</span></div>
+        <button class="btn-add-cart" onclick="addToCart('Controller')">Add to Cart</button>
       </div>
 
       <div class="product-card">
         <div class="product-thumb">📷</div>
         <div class="product-name">Digital Camera — 24MP, 4K Video</div>
         <div class="product-price">₦310,000</div>
+        <button class="btn-add-cart" onclick="addToCart('Camera')">Add to Cart</button>
       </div>
 
     </div>
@@ -101,7 +130,7 @@
   </footer>
 
   <script>
-    // Flash sale countdown — purely cosmetic
+    // Flash sale countdown
     let t = 2 * 3600 + 14 * 60 + 33;
     const el = document.getElementById('flashTimer');
     setInterval(() => {
@@ -112,6 +141,22 @@
       const s = String(t % 60).padStart(2, '0');
       el.textContent = `${h}:${m}:${s}`;
     }, 1000);
+
+    // NEW: Cart Logic
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('kartly_cart') || '[]');
+      document.getElementById('cartCount').textContent = cart.length;
+    }
+
+    function addToCart(itemName) {
+      const cart = JSON.parse(localStorage.getItem('kartly_cart') || '[]');
+      cart.push(itemName);
+      localStorage.setItem('kartly_cart', JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    // Initialize cart on page load
+    updateCartCount();
   </script>
 
 </body>

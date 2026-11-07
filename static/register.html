@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Kartly</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+      margin: 0;
+    }
+    .register-container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 450px;
+    }
+    .register-logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--kartly-orange);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .register-container h2 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: var(--kartly-dark);
+      text-align: center;
+    }
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-row .form-group {
+      flex: 1;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--kartly-gray);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .form-group input:focus {
+      border-color: var(--kartly-orange);
+    }
+    .btn-register {
+      width: 100%;
+      background: var(--kartly-orange);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-register:hover { background: #e07b15; }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--kartly-gray);
+    }
+    .login-link a {
+      color: var(--kartly-orange);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-container">
+    <div class="register-logo">🛒 Kartly</div>
+    <h2>Create your account</h2>
+
+    <form onsubmit="event.preventDefault(); alert('Account created! Redirecting to login...'); window.location.href='login.html';">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="e.g. Ada" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="e.g. Okafor" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" min="18" max="100" placeholder="Must be 18 or older" required>
+      </div>
+
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Put Your Gmail Password" required>
+      </div>
+
+      <button type="submit" class="btn-register">Create Account</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Sign in</a>
+    </div>
+  </div>
+
+</body>
+</html>
