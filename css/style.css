@@ -195,6 +195,8 @@ body {
 /* ---- Footer ---- */
 footer {
   background: var(--kartly-dark);
+
+  
   color: #bbb;
   text-align: center;
   padding: 28px;
